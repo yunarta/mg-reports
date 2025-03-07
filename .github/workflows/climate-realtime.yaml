@@ -40,10 +40,11 @@ jobs:
           # Get today's, yesterday's, and tomorrow's dates in the format YYYY-MM-DD
           TODAY=$(date '+%Y-%m-%d')
           YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d')
+          LAST_TWO_DAYS=$(date -d '2 days ago' '+%Y-%m-%d')
           TOMORROW=$(date -d 'tomorrow' '+%Y-%m-%d')
 
           # Sync only the required folders from S3
-          for DATE in "$YESTERDAY" "$TODAY" "$TOMORROW"; do
+          for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY" "$TOMORROW"; do
             aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --only-show-errors
           done
 
@@ -56,7 +57,9 @@ jobs:
         run: |
           climate-realtime
           mv *.svg publication/source/climate
-          rm -rf publication/source/climate/archive
+          
+          climate-archive
+          mv *.svg publication/source/climate/archive
           
           cd publication
           make confluence | true
