@@ -1,0 +1,26 @@
+[build-system]
+requires = ["flit_core >=3.11,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "mg_reports"
+authors = [{ name = "Yunarta Kartawahyudi", email = "yunarta.kartawahyudi@gmail.com" }]
+license = "MIT"
+license-files = ["LICENSE"]
+dynamic = ["version", "description"]
+
+dependencies = [
+    "matplotlib",
+    "scipy",
+    "sphinx",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-confluencebuilder",
+    "jinja2"
+]
+
+[tool.flit.module]
+name = "mobilesolutionworks.mg"
+
+[project.scripts]
+climate-realtime = "mobilesolutionworks.mg.climate:realtime"
+climate-archive = "mobilesolutionworks.mg.climate:archive"
