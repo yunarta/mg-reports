@@ -58,4 +58,4 @@ jobs:
           mv *.svg publication/source/climate
           
           cd publication
-          make confluence
+          make confluence | true
