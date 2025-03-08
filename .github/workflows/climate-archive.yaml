@@ -1,6 +1,6 @@
 name: Climate Archive
 
-#on:
+on: {}
 #  push:
 #    branches:
 #      - main
@@ -8,54 +8,54 @@ name: Climate Archive
 #    - cron: "0 1 * * *"  # Run every day at 1am only on the main branch
 
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
 
-      - name: Set up Python environment
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+#       - name: Set up Python environment
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
 
-      - name: Install Jupyter, Nbconvert, and Required Libraries
-        run: |
-          python -m pip install --upgrade pip 
-          pip install .
+#       - name: Install Jupyter, Nbconvert, and Required Libraries
+#         run: |
+#           python -m pip install --upgrade pip 
+#           pip install .
 
-      - name: Configure AWS Credentials
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          set -x
-          /usr/local/bin/aws  --version
-          /usr/local/bin/aws  configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-          /usr/local/bin/aws  configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-          /usr/local/bin/aws  configure set default.region us-west-2
+#       - name: Configure AWS Credentials
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         run: |
+#           set -x
+#           /usr/local/bin/aws  --version
+#           /usr/local/bin/aws  configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#           /usr/local/bin/aws  configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+#           /usr/local/bin/aws  configure set default.region us-west-2
           
-          mkdir -p data
-          # Get today's, yesterday's, and tomorrow's dates in the format YYYY-MM-DD
-          TODAY=$(date '+%Y-%m-%d')
-          YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d')
-          LAST_TWO_DAYS=$(date -d '2 days ago' '+%Y-%m-%d')
+#           mkdir -p data
+#           # Get today's, yesterday's, and tomorrow's dates in the format YYYY-MM-DD
+#           TODAY=$(date '+%Y-%m-%d')
+#           YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d')
+#           LAST_TWO_DAYS=$(date -d '2 days ago' '+%Y-%m-%d')
           
-          # Sync only the required folders from S3
-          for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY"; do
-          aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --only-show-errors
-          done
+#           # Sync only the required folders from S3
+#           for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY"; do
+#           aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --only-show-errors
+#           done
 
-      - name: Run
-        env:
-          CONFLUENCE_URL: ${{ vars.CONFLUENCE_URL }}
-          CONFLUENCE_SPACE_KEY: ${{ vars.CONFLUENCE_SPACE_KEY }}
-          CONFLUENCE_USERNAME: ${{ vars.CONFLUENCE_USERNAME }}
-          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
-        run: |
-          climate-archive
-          mv *.svg publication/source/climate/archive
+#       - name: Run
+#         env:
+#           CONFLUENCE_URL: ${{ vars.CONFLUENCE_URL }}
+#           CONFLUENCE_SPACE_KEY: ${{ vars.CONFLUENCE_SPACE_KEY }}
+#           CONFLUENCE_USERNAME: ${{ vars.CONFLUENCE_USERNAME }}
+#           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+#         run: |
+#           climate-archive
+#           mv *.svg publication/source/climate/archive
           
-          cd publication
-          make confluence | true
+#           cd publication
+#           make confluence | true

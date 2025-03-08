@@ -15,7 +15,8 @@ dependencies = [
     "sphinx",
     "sphinx_rtd_theme",
     "sphinxcontrib-confluencebuilder",
-    "jinja2"
+    "jinja2",
+    "pytz"
 ]
 
 [tool.flit.module]
