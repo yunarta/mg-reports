@@ -4,7 +4,7 @@ from .data import realtime_data, data_from_yesterday
 from scipy.ndimage import uniform_filter1d
 
 
-def _create_plots(times, temperatures, humidities, window_size=5):
+def _create_plots(times, temperatures, humidities, window_size=3):
     temperatures = uniform_filter1d(temperatures, size=window_size)
     humidities = uniform_filter1d(humidities, size=window_size)
 
