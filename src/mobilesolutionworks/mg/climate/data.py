@@ -54,12 +54,12 @@ def _collect_data(time_filter) -> tuple[list[datetime], list[float], list[float]
 
 
 def realtime_data() -> tuple[list[datetime], list[float], list[float]]:
-    time_threshold = datetime.now() - timedelta(hours=12)
+    time_threshold = datetime.now(pytz.timezone('Asia/Jakarta')) - timedelta(hours=12)
     return _collect_data(lambda t: t >= time_threshold)
 
 
 def data_from_yesterday() -> tuple[list[datetime], list[float], list[float]]:
-    today = datetime.now()
+    today = datetime.now(pytz.timezone('Asia/Jakarta'))
     start = (today - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     end = (today - timedelta(days=1)).replace(hour=23, minute=59, second=59, microsecond=999999)
     return _collect_data(lambda t: start <= t <= end)
