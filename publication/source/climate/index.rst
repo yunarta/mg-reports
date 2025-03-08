@@ -8,7 +8,7 @@ Climate
 
     archive/*
     
-Realtime Over the Last 24 Hours (every 1 hour update)
+Realtime Over the Last 12 Hours (every 1 hour update)
 
 .. image:: temperature.svg
     :alt: Temperature
