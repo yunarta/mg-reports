@@ -1,1 +1,1 @@
-from .realtime import realtime, archive
+from .plot import realtime, archive

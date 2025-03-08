@@ -14,8 +14,9 @@ def _process_data_file(file_path: str) -> tuple[datetime | None, float | None, f
         humidity = payload.get("humidity")
 
         if unix_time is not None and temperature is not None and humidity is not None:
-            timestamp = datetime.fromtimestamp(unix_time / 1000)
-            return timestamp, temperature, humidity
+            timestamp = datetime.fromtimestamp(unix_time / 1000, pytz.timezone('Asia/Singapore'))
+            jakarta_timestamp = timestamp.astimezone(pytz.timezone('Asia/Jakarta'))
+            return jakarta_timestamp, temperature, humidity
         else:
             print(f"Data missing in file: {file_path}")
             return None, None, None
@@ -52,7 +53,7 @@ def _collect_data(time_filter) -> tuple[list[datetime], list[float], list[float]
 
 
 def realtime_data() -> tuple[list[datetime], list[float], list[float]]:
-    time_threshold = datetime.now() - timedelta(hours=24)
+    time_threshold = datetime.now() - timedelta(hours=12)
     return _collect_data(lambda t: t >= time_threshold)
 
 
