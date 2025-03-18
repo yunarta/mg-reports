@@ -5,8 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "*/15 * * * *"  # Run every 15 minutes only on the main branch
-
+  - cron: "0 * * * *"  # Run every hour only on the main branch
 
 jobs:
   build:
