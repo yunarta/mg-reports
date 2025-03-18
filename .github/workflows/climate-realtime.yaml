@@ -52,7 +52,7 @@ jobs:
 
           # Sync only the required folders from S3
           for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY" "$TOMORROW"; do
-            aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --exact-timestamps --size-only --only-show-errors
+            aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --exact-timestamps --size-only
           done
 
       - name: Run
