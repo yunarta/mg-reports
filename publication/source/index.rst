@@ -13,3 +13,4 @@ Reports
    :glob:
 
    climate/*
+   dehumidifier/*
