@@ -32,7 +32,7 @@ def _collect_data(time_filter) -> tuple[list[datetime], list[float], list[float]
     temperatures = []
     humidities = []
 
-    for root, _, files in os.walk("data"):
+    for root, _, files in os.walk("."):
         for filename in files:
             if filename.endswith(".json"):
                 file_path = os.path.join(root, filename)
