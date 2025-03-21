@@ -43,7 +43,7 @@ jobs:
           /usr/local/bin/aws  configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
           /usr/local/bin/aws  configure set default.region us-west-2
 
-          mkdir -p data
+          mkdir -p data/climate
           # Get today's, yesterday's, and tomorrow's dates in the format YYYY-MM-DD
           TODAY=$(date '+%Y-%m-%d')
           YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d')
@@ -52,7 +52,20 @@ jobs:
 
           # Sync only the required folders from S3
           for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY" "$TOMORROW"; do
-            aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/$DATE" --exact-timestamps --size-only
+            aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:09:B0/$DATE/" "data/climate/$DATE" --exact-timestamps --size-only
+          done
+
+
+          mkdir -p data/dehumidifier
+          # Get today's, yesterday's, and tomorrow's dates in the format YYYY-MM-DD
+          TODAY=$(date '+%Y-%m-%d')
+          YESTERDAY=$(date -d 'yesterday' '+%Y-%m-%d')
+          LAST_TWO_DAYS=$(date -d '2 days ago' '+%Y-%m-%d')
+          TOMORROW=$(date -d 'tomorrow' '+%Y-%m-%d')
+
+          # Sync only the required folders from S3
+          for DATE in "$LAST_TWO_DAYS" "$YESTERDAY" "$TODAY" "$TOMORROW"; do
+            aws s3 sync "s3://microgreen-dev-esp32/dev/climate/ESP32-C3-84:FC:E6:01:1D:CC/$DATE/" "data/dehumidifier/$DATE" --exact-timestamps --size-only
           done
 
       - name: Run
@@ -62,13 +75,21 @@ jobs:
           CONFLUENCE_USERNAME: ${{ vars.CONFLUENCE_USERNAME }}
           CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
         run: |
+          cd data/climate
           climate-realtime
-          mv *.svg publication/source/climate
+          mv *.svg ../../publication/source/climate
           
           climate-archive
-          mv *.svg publication/source/climate/archive
+          mv *.svg ../../publication/source/climate/archive
           
-          cd publication
+          cd ../dehumidifer
+          climate-realtime
+          mv *.svg ../../publication/source/dehumidifer 
+
+          climate-archive
+          mv *.svg ../../publication/source/dehumidifier/archive
+
+          cd ../../publication
           make confluence | true
 
       - name: Cache Climate Data
