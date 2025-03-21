@@ -90,7 +90,7 @@ jobs:
           mv *.svg ../../publication/source/dehumidifier/archive
 
           cd ../../publication
-          make confluence | true
+          make confluence
 
       - name: Cache Climate Data
         uses: actions/cache@v3
