@@ -84,7 +84,7 @@ jobs:
           
           cd ../dehumidifier
           climate-realtime
-          mv *.svg ../../publication/source/dehumidifer 
+          mv *.svg ../../publication/source/dehumidifier 
 
           climate-archive
           mv *.svg ../../publication/source/dehumidifier/archive
