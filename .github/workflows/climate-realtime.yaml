@@ -82,13 +82,15 @@ jobs:
           climate-archive
           mv *.svg ../../publication/source/climate/archive
           
+          set +e
           cd ../dehumidifier
           climate-realtime
           mv *.svg ../../publication/source/dehumidifier 
 
           climate-archive
           mv *.svg ../../publication/source/dehumidifier/archive
-
+          set -e
+          
           cd ../../publication
           make confluence | true
 
