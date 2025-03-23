@@ -77,22 +77,22 @@ jobs:
         run: |
           cd data/climate
           climate-realtime
-          mv *.svg ../../publication/source/climate
+          mv -v *.svg ../../publication/source/climate
           
           climate-archive
-          mv *.svg ../../publication/source/climate/archive
+          mv -v *.svg ../../publication/source/climate/archive
           
           set +e
           cd ../dehumidifier
           climate-realtime
-          mv *.svg ../../publication/source/dehumidifier 
+          mv -v *.svg ../../publication/source/dehumidifier 
 
           climate-archive
-          mv *.svg ../../publication/source/dehumidifier/archive
+          mv -v *.svg ../../publication/source/dehumidifier/archive
           set -e
           
           cd ../../publication
-          make confluence | true
+          make confluence 
 
       - name: Cache Climate Data
         uses: actions/cache@v3
