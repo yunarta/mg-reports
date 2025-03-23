@@ -92,7 +92,7 @@ jobs:
           set -e
           
           cd ../../publication
-          make confluence 
+          make confluence | true
 
       - name: Cache Climate Data
         uses: actions/cache@v3
